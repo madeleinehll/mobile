@@ -9,6 +9,16 @@ let stephansdom = {
 
 // Karte initialisieren
 var map = L.map('map').fitWorld();
+function onLocationFound(e) {
+    var radius = e.accuracy;
+
+    L.marker(e.latlng).addTo(map)
+        .bindPopup("You are within " + radius + " meters from this point").openPopup();
+
+    L.circle(e.latlng, radius).addTo(map);
+}
+
+map.on('locationfound', onLocationFound);
 map.locate({setView: true, maxZoom: 16});
 
 L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
