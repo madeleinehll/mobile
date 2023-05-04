@@ -9,16 +9,16 @@ let stephansdom = {
 
 // Karte initialisieren
 var map = L.map('map').fitWorld();
-function onLocationFound(e) {
-    var radius = e.accuracy;
+function onLocationFound(evt) {
+    var radius = evt.accuracy;
 
-    L.marker(e.latlng).addTo(map)
+    L.marker(evt.latlng).addTo(map)
         .bindPopup("You are within " + radius + " meters from this point").openPopup();
 
-    L.circle(e.latlng, radius).addTo(map);
+    L.circle(evt.latlng, radius).addTo(map);
 }
-function onLocationError(e) {
-    alert(e.message);
+function onLocationError(evt) {
+    alert(evt.message);
 }
 map.on('locationerror', onLocationError);
 map.on('locationfound', onLocationFound);
