@@ -8,9 +8,14 @@ let stephansdom = {
 };
 
 // Karte initialisieren
-let map = L.map("map").setView([
-    stephansdom.lat, stephansdom.lng
-], 12);
+var map = L.map('map').fitWorld();
+map.locate({setView: true, maxZoom: 16});
+
+L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 19,
+    attribution: '© OpenStreetMap'
+}).addTo(map);
+
 
 // Hintergrundlayer
 let layerControl = L.control.layers({
