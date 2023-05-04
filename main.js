@@ -17,7 +17,10 @@ function onLocationFound(e) {
 
     L.circle(e.latlng, radius).addTo(map);
 }
-
+function onLocationError(e) {
+    alert(e.message);
+}
+map.on('locationerror', onLocationError);
 map.on('locationfound', onLocationFound);
 map.locate({setView: true, maxZoom: 16});
 
