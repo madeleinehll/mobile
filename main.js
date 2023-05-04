@@ -10,10 +10,10 @@ let stephansdom = {
 // Karte initialisieren
 var map = L.map('map').fitWorld();
 function onLocationFound(evt) {
-    var radius = evt.accuracy;
+    let radius = Math.round(evt.accuracy);
 
     L.marker(evt.latlng).addTo(map)
-        .bindPopup("You are within " + radius + " meters from this point").openPopup();
+        .bindTooltip(`You are within ${radius} meters from this point`).openTooltip();
 
     L.circle(evt.latlng, radius).addTo(map);
 }
