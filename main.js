@@ -12,17 +12,24 @@ var map = L.map('map').fitWorld();
 function onLocationFound(evt) {
     let radius = Math.round(evt.accuracy);
 
-    L.marker(evt.latlng).addTo(map)
-        .bindTooltip(`You are within ${radius} meters from this point`).openTooltip();
+    let circle = L.circle([0, 0], 0).addTo(map);
+    let marker = L.marker([0, 0]).addTo(map);
 
-    L.circle(evt.latlng, radius).addTo(map);
+    marker.setLatLng(evt.latlng);
+    marker.bindTooltip(`You are within ${radius} meters from this point`).openTooltip();
+    circle.setLatLng(evt.latlng);
+    circle.setRadius(radius)
 }
 function onLocationError(evt) {
     alert(evt.message);
 }
 map.on('locationerror', onLocationError);
 map.on('locationfound', onLocationFound);
-map.locate({setView: true, maxZoom: 16});
+map.locate({
+    setView: true,
+    watch: true,
+    maxZoom: 16
+});
 
 L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 19,
