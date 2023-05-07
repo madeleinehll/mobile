@@ -1,5 +1,4 @@
 /* Vienna Sightseeing Beispiel */
-
 // Stephansdom Objekt
 let stephansdom = {
     lat: 48.208493,
@@ -8,34 +7,9 @@ let stephansdom = {
 };
 
 // Karte initialisieren
-var map = L.map('map').fitWorld();
-function onLocationFound(evt) {
-    let radius = Math.round(evt.accuracy);
-
-    let circle = L.circle([0, 0], 0).addTo(map);
-    let marker = L.marker([0, 0]).addTo(map);
-
-    marker.setLatLng(evt.latlng);
-    marker.bindTooltip(`You are within ${radius} meters from this point`).openTooltip();
-    circle.setLatLng(evt.latlng);
-    circle.setRadius(radius)
-}
-function onLocationError(evt) {
-    alert(evt.message);
-}
-map.on('locationerror', onLocationError);
-map.on('locationfound', onLocationFound);
-map.locate({
-    setView: true,
-    watch: true,
-    maxZoom: 16
-});
-
-L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    maxZoom: 19,
-    attribution: '© OpenStreetMap'
-}).addTo(map);
-
+let map = L.map("map").setView([
+    stephansdom.lat, stephansdom.lng
+], 12);
 
 // Hintergrundlayer
 let layerControl = L.control.layers({
@@ -57,3 +31,29 @@ L.marker([
 L.control.scale({
     imperial: false,
 }).addTo(map);
+
+// Geolocation
+map.locate({
+    setView: true,
+    watch: true,
+    maxZoom: 16
+});
+
+let circle = L.circle([0, 0], 0).addTo(map);
+let marker = L.marker([0, 0]).addTo(map);
+
+map.on('locationfound', function (evt) {
+    console.log(evt)
+    let radius = Math.round(evt.accuracy);
+
+    marker.setLatLng(evt.latlng);
+    marker.bindTooltip(`You are within ${radius} meters from this point`).openTooltip();
+
+    circle.setLatLng(evt.latlng);
+    circle.setRadius(radius);
+});
+
+map.on('locationerror', function (evt) {
+    console.log(evt)
+    alert(evt.message);
+});
